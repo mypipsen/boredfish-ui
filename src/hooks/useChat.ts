@@ -49,7 +49,7 @@ export const useChat = () => {
   ]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const sendMessage = (content: string) => {
+  const sendMessage = async (content: string) => {
     const userMessage: Message = {
       id: `user-${Date.now()}`,
       content,
@@ -60,40 +60,31 @@ export const useChat = () => {
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
 
-    // Simulate AI response (replace with actual API call later)
-    setTimeout(() => {
+    try {
+      const response = await fetch(`http://localhost/search?q=${encodeURIComponent(content)}`);
+      const data = await response.json();
+      
       const botMessage: Message = {
         id: `bot-${Date.now()}`,
-        content: generateResponse(content),
+        content: data.message || "Here are the results:",
+        isUser: false,
+        timestamp: Date.now(),
+        movies: data.movies || [],
+      };
+      
+      setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      const errorMessage: Message = {
+        id: `bot-${Date.now()}`,
+        content: "Sorry, I couldn't search for that right now. Please try again.",
         isUser: false,
         timestamp: Date.now(),
       };
-      setMessages((prev) => [...prev, botMessage]);
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
-    }, 800);
+    }
   };
 
   return { messages, sendMessage, isLoading };
-};
-
-const generateResponse = (input: string): string => {
-  const lower = input.toLowerCase();
-
-  if (lower.includes("search") || lower.includes("find") || lower.includes("looking for")) {
-    return "I found several matches! What would you like to do? You can ask me to:\n• Add to watchlist\n• Get similar recommendations\n• Notify when new episodes are available";
-  }
-
-  if (lower.includes("watchlist") || lower.includes("add")) {
-    return "Added to your watchlist! You'll find all your saved shows there. Want me to recommend something similar?";
-  }
-
-  if (lower.includes("recommend") || lower.includes("similar")) {
-    return "Based on your interests, here are some recommendations you might enjoy. Would you like to add any to your watchlist?";
-  }
-
-  if (lower.includes("notify") || lower.includes("alert") || lower.includes("episode")) {
-    return "I'll notify you when new episodes are released! You can manage your notifications in settings.";
-  }
-
-  return "I can help you search for movies and TV shows, manage your watchlist, and get personalized recommendations. What would you like to do?";
 };
