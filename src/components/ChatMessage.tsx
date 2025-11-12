@@ -15,7 +15,7 @@ export const ChatMessage = ({ message, isUser }: ChatMessageProps) => {
     >
       <div
         className={cn(
-          "max-w-[80%] rounded-2xl px-4 py-3 text-sm",
+          "max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[75%]",
           isUser
             ? "bg-primary text-primary-foreground"
             : "bg-secondary text-secondary-foreground"

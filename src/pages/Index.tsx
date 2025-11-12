@@ -14,15 +14,15 @@ const Index = () => {
 
   return (
     <div className="flex h-screen flex-col bg-background">
-      <header className="border-b border-border bg-card px-6 py-4">
-        <div className="flex items-center gap-2">
-          <Film className="h-6 w-6 text-primary" />
-          <h1 className="text-xl font-semibold text-foreground">bored.fish</h1>
+      <header className="border-b border-border bg-card px-4 py-4 sm:px-6">
+        <div className="mx-auto flex max-w-2xl items-center justify-center gap-2">
+          <Film className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
+          <h1 className="text-lg font-semibold text-foreground sm:text-xl">bored.fish</h1>
         </div>
       </header>
 
-      <main className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-3xl space-y-4 p-4">
+      <main className="flex-1 overflow-y-auto px-4 sm:px-6">
+        <div className="mx-auto max-w-2xl space-y-4 py-6">
           {messages.map((message) => (
             <ChatMessage
               key={message.id}
@@ -45,7 +45,11 @@ const Index = () => {
         </div>
       </main>
 
-      <ChatInput onSend={sendMessage} disabled={isLoading} />
+      <div className="border-t border-border bg-background px-4 sm:px-6">
+        <div className="mx-auto max-w-2xl">
+          <ChatInput onSend={sendMessage} disabled={isLoading} />
+        </div>
+      </div>
     </div>
   );
 };

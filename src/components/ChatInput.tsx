@@ -20,7 +20,7 @@ export const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 p-4 border-t border-border bg-background">
+    <form onSubmit={handleSubmit} className="flex gap-2 py-4">
       <input
         type="text"
         value={input}
@@ -38,7 +38,7 @@ export const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
         type="submit"
         size="icon"
         disabled={!input.trim() || disabled}
-        className="h-12 w-12 rounded-xl"
+        className="h-12 w-12 shrink-0 rounded-xl"
       >
         <Send className="h-5 w-5" />
       </Button>
