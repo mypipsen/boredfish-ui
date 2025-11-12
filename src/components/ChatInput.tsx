@@ -20,7 +20,7 @@ export const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 py-4">
+    <form onSubmit={handleSubmit} className="flex gap-2 py-3">
       <input
         type="text"
         value={input}

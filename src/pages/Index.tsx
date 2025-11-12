@@ -22,12 +22,13 @@ const Index = () => {
       </header>
 
       <main className="flex-1 overflow-y-auto px-4 sm:px-6">
-        <div className="mx-auto max-w-2xl space-y-4 py-6">
+        <div className="mx-auto max-w-2xl space-y-4 py-4">
           {messages.map((message) => (
             <ChatMessage
               key={message.id}
               message={message.content}
               isUser={message.isUser}
+              movies={message.movies}
             />
           ))}
           {isLoading && (

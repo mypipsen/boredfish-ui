@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { Movie } from "@/components/MovieCard";
 
 export interface Message {
   id: string;
   content: string;
   isUser: boolean;
   timestamp: number;
+  movies?: Movie[];
 }
 
 export const useChat = () => {
@@ -15,6 +17,35 @@ export const useChat = () => {
       isUser: false,
       timestamp: Date.now(),
     },
+    {
+      id: "sample",
+      content: "Here are some popular sci-fi movies you might enjoy:",
+      isUser: false,
+      timestamp: Date.now() + 1,
+      movies: [
+        {
+          id: "1",
+          title: "Inception",
+          year: "2010",
+          rating: 8.8,
+          poster: "https://image.tmdb.org/t/p/w200/ljsZTbVsrQSqZgWeep2B1QiDKuh.jpg"
+        },
+        {
+          id: "2",
+          title: "Interstellar",
+          year: "2014",
+          rating: 8.7,
+          poster: "https://image.tmdb.org/t/p/w200/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg"
+        },
+        {
+          id: "3",
+          title: "The Matrix",
+          year: "1999",
+          rating: 8.7,
+          poster: "https://image.tmdb.org/t/p/w200/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg"
+        }
+      ]
+    }
   ]);
   const [isLoading, setIsLoading] = useState(false);
 

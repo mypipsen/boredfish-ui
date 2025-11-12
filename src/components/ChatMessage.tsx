@@ -1,11 +1,13 @@
 import { cn } from "@/lib/utils";
+import { MovieCard, Movie } from "./MovieCard";
 
 interface ChatMessageProps {
   message: string;
   isUser: boolean;
+  movies?: Movie[];
 }
 
-export const ChatMessage = ({ message, isUser }: ChatMessageProps) => {
+export const ChatMessage = ({ message, isUser, movies }: ChatMessageProps) => {
   return (
     <div
       className={cn(
@@ -22,6 +24,13 @@ export const ChatMessage = ({ message, isUser }: ChatMessageProps) => {
         )}
       >
         {message}
+        {movies && movies.length > 0 && (
+          <div className="mt-3 space-y-2">
+            {movies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
