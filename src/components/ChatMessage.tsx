@@ -11,7 +11,7 @@ export const ChatMessage = ({ message, isUser, movies }: ChatMessageProps) => {
   return (
     <div
       className={cn(
-        "flex w-full animate-in fade-in-50 slide-in-from-bottom-2 duration-300",
+        "flex w-full animate-in fade-in-50 slide-in-from-bottom-2 duration-300 whitespace-pre-wrap",
         isUser ? "justify-end" : "justify-start"
       )}
     >
