@@ -65,7 +65,7 @@ export const useChat = () => {
 
     try {
       const eventSource = new EventSource(
-        `/api/search?q=${encodeURIComponent(q)}`
+        `/api/chat?q=${encodeURIComponent(q)}`
       );
 
       const botMessage: Message = {
@@ -82,12 +82,12 @@ export const useChat = () => {
       eventSource.onerror = (err) => console.error("SSE error:", err);
 
       eventSource.onmessage = (event) => {
-        const { text } = JSON.parse(event.data);
+        const { text, movies } = JSON.parse(event.data);
 
         setMessages((prev) =>
           prev.map((message) =>
             message.id === botMessage.id
-              ? { ...message, content: message.content + text }
+              ? { ...message, content: text, movies: movies }
               : message
           )
         );
