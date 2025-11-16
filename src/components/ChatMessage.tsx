@@ -17,15 +17,15 @@ export const ChatMessage = ({ message, isUser, movies }: ChatMessageProps) => {
     >
       <div
         className={cn(
-          "max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[75%]",
+          "max-w-[85%] rounded-2xl px-5 py-4 text-sm leading-relaxed sm:max-w-[75%] shadow-lg",
           isUser
-            ? "bg-primary text-primary-foreground"
-            : "bg-secondary text-secondary-foreground"
+            ? "bg-primary text-primary-foreground shadow-primary/20"
+            : "bg-secondary/80 backdrop-blur-sm text-secondary-foreground shadow-black/10 border border-border/30"
         )}
       >
         {message}
         {movies && movies.length > 0 && (
-          <div className="mt-3 space-y-2">
+          <div className="mt-4 space-y-3">
             {movies.map((movie) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}
