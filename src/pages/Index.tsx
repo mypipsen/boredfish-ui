@@ -61,10 +61,10 @@ const Index = () => {
         </>
       ) : (
         <main className="flex-1 flex items-center justify-center px-4 sm:px-6">
-          <div className="w-full max-w-2xl space-y-6 text-center">
-            <div className="space-y-2">
-              <p className="text-muted-foreground text-sm">
-                Search for movies and TV shows
+          <div className="w-full max-w-2xl space-y-6">
+            <div className="bg-secondary/80 backdrop-blur-sm border border-border/30 rounded-2xl px-5 py-4 text-sm leading-relaxed shadow-lg shadow-black/10 mx-auto max-w-[85%] sm:max-w-[75%]">
+              <p className="text-secondary-foreground">
+                Hi! I'm your movie and TV show assistant. You can ask me to search for shows, add them to your watchlist, or get recommendations. Try asking about a movie!
               </p>
             </div>
             <ChatInput onSend={sendMessage} disabled={isLoading} />
