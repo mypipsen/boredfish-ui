@@ -12,7 +12,8 @@ const Index = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const hasMessages = messages.length > 0;
+  // Filter out welcome message for checking if we should center
+  const hasRealMessages = messages.some(m => m.id !== "welcome");
 
   return (
     <div className="flex h-screen flex-col bg-gradient-to-br from-background via-background to-background/95">
@@ -25,7 +26,7 @@ const Index = () => {
         </div>
       </header>
 
-      {hasMessages ? (
+      {hasRealMessages ? (
         <>
           <main className="flex-1 overflow-y-auto px-4 sm:px-6">
             <div className="mx-auto max-w-2xl space-y-4 py-6">
@@ -60,7 +61,12 @@ const Index = () => {
         </>
       ) : (
         <main className="flex-1 flex items-center justify-center px-4 sm:px-6">
-          <div className="w-full max-w-2xl">
+          <div className="w-full max-w-2xl space-y-6 text-center">
+            <div className="space-y-2">
+              <p className="text-muted-foreground text-sm">
+                Search for movies and TV shows
+              </p>
+            </div>
             <ChatInput onSend={sendMessage} disabled={isLoading} />
           </div>
         </main>
