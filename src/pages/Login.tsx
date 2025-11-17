@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
+import { signIn } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,7 +10,6 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -19,7 +18,15 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      await login(email, password);
+      const result = await signIn.email({
+        email,
+        password,
+      });
+
+      if (result.error) {
+        throw new Error(result.error.message || "Login failed");
+      }
+
       navigate("/");
     } catch (error) {
       toast({
