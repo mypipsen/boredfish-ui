@@ -1,10 +1,12 @@
 import { NavLink } from "./NavLink";
-import { useAuth } from "@/contexts/AuthContext";
+import { signOut } from "@/lib/auth-client";
 import { Button } from "./ui/button";
 import { LogOut } from "lucide-react";
 
 export const TopNav = () => {
-  const { logout } = useAuth();
+  const handleLogout = async () => {
+    await signOut();
+  };
 
   return (
     <nav className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -36,7 +38,7 @@ export const TopNav = () => {
           <Button
             variant="ghost"
             size="sm"
-            onClick={logout}
+            onClick={handleLogout}
             className="text-muted-foreground hover:text-foreground"
           >
             <LogOut className="mr-2 h-4 w-4" />
