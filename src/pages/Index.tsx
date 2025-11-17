@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
+import { TopNav } from "@/components/TopNav";
 import { useChat } from "@/hooks/useChat";
-import boredFish from "@/assets/bored-fish.png";
 
 const Index = () => {
   const { messages, sendMessage, isLoading } = useChat();
@@ -17,14 +17,7 @@ const Index = () => {
 
   return (
     <div className="flex h-screen flex-col bg-gradient-to-br from-background via-background to-background/95">
-      <header className="border-b border-border/50 bg-card/30 backdrop-blur-sm px-4 py-4 sm:px-6">
-        <div className="mx-auto flex max-w-2xl items-center justify-center gap-3">
-          <img src={boredFish} alt="Bored Fish" className="h-8 w-8 sm:h-10 sm:w-10 opacity-90" />
-          <h1 className="text-xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent sm:text-2xl">
-            bored.fish
-          </h1>
-        </div>
-      </header>
+      <TopNav />
 
       {hasRealMessages ? (
         <>
