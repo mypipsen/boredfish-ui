@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { TopNav } from "@/components/TopNav";
 import { MovieCard } from "@/components/MovieCard";
+import { ReleaseCalendar } from "@/components/ReleaseCalendar";
 import { useToast } from "@/hooks/use-toast";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface WatchlistItem {
   id: string;
@@ -10,6 +12,7 @@ interface WatchlistItem {
   poster: string;
   type: "movie" | "tv";
   rating: number;
+  releaseDate?: string;
 }
 
 const Watchlist = () => {
@@ -58,6 +61,15 @@ const Watchlist = () => {
           type: "movie",
           rating: 8.8,
         },
+        {
+          id: "4",
+          title: "The Mandalorian & Grogu",
+          year: "2026",
+          poster: "https://images.unsplash.com/photo-1608889825103-eb5ed706fc64?w=300&h=450&fit=crop",
+          type: "movie",
+          rating: 0,
+          releaseDate: "2026-05-22",
+        },
       ];
       setItems(mockItems);
     } finally {
@@ -78,11 +90,24 @@ const Watchlist = () => {
             Your watchlist is empty
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {items.map((item) => (
-              <MovieCard key={item.id} movie={item} />
-            ))}
-          </div>
+          <Tabs defaultValue="grid" className="w-full">
+            <TabsList className="mb-6">
+              <TabsTrigger value="grid">Grid View</TabsTrigger>
+              <TabsTrigger value="calendar">Calendar</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="grid">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {items.map((item) => (
+                  <MovieCard key={item.id} movie={item} />
+                ))}
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="calendar">
+              <ReleaseCalendar items={items} />
+            </TabsContent>
+          </Tabs>
         )}
       </main>
     </div>
