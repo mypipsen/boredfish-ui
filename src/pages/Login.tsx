@@ -34,10 +34,7 @@ const Login = () => {
         throw new Error(result.error.message || "Login failed");
       }
 
-      // Wait for session to be established before redirecting
-      setTimeout(() => {
-        navigate("/");
-      }, 100);
+      navigate("/");
     } catch (error) {
       toast({
         title: "Login failed",
