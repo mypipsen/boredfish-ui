@@ -32,11 +32,34 @@ const Watchlist = () => {
       const data = await response.json();
       setItems(data.items || []);
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to load watchlist",
-        variant: "destructive",
-      });
+      // Mock data for development - remove this when backend is ready
+      const mockItems: WatchlistItem[] = [
+        {
+          id: "1",
+          title: "The Shawshank Redemption",
+          year: "1994",
+          poster: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop",
+          type: "movie",
+          rating: 9.3,
+        },
+        {
+          id: "2",
+          title: "Breaking Bad",
+          year: "2008",
+          poster: "https://images.unsplash.com/photo-1574267432644-f86e0956c1e0?w=300&h=450&fit=crop",
+          type: "tv",
+          rating: 9.5,
+        },
+        {
+          id: "3",
+          title: "Inception",
+          year: "2010",
+          poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&h=450&fit=crop",
+          type: "movie",
+          rating: 8.8,
+        },
+      ];
+      setItems(mockItems);
     } finally {
       setIsLoading(false);
     }

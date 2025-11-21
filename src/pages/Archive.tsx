@@ -34,11 +34,37 @@ const Archive = () => {
       const data = await response.json();
       setItems(data.items || []);
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to load archive",
-        variant: "destructive",
-      });
+      // Mock data for development - remove this when backend is ready
+      const mockItems: ArchiveItem[] = [
+        {
+          id: "4",
+          title: "The Dark Knight",
+          year: "2008",
+          poster: "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=300&h=450&fit=crop",
+          type: "movie",
+          rating: 9.0,
+          liked: true,
+        },
+        {
+          id: "5",
+          title: "Stranger Things",
+          year: "2016",
+          poster: "https://images.unsplash.com/photo-1594908900066-3f47337549d8?w=300&h=450&fit=crop",
+          type: "tv",
+          rating: 8.7,
+          liked: true,
+        },
+        {
+          id: "6",
+          title: "The Room",
+          year: "2003",
+          poster: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&h=450&fit=crop",
+          type: "movie",
+          rating: 3.7,
+          liked: false,
+        },
+      ];
+      setItems(mockItems);
     } finally {
       setIsLoading(false);
     }
