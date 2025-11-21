@@ -4,10 +4,12 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { format, isSameDay, parseISO } from "date-fns";
 import { cn } from "@/lib/utils";
+import { Film, Tv } from "lucide-react";
 
 interface ReleaseItem {
   id: string;
   title: string;
+  year: string;
   releaseDate?: string;
   type: "movie" | "tv";
   poster: string;
@@ -40,6 +42,20 @@ export const ReleaseCalendar = ({ items }: ReleaseCalendarProps) => {
     upcomingReleases.map((item) => format(item.date, "yyyy-MM-dd"))
   );
 
+  // Get release type for a specific date
+  const getReleaseForDate = (date: Date) => {
+    return upcomingReleases.find((item) =>
+      isSameDay(item.date, date)
+    );
+  };
+
+  // Sort all items by release date
+  const allItemsSorted = [...items].sort((a, b) => {
+    if (!a.releaseDate) return 1;
+    if (!b.releaseDate) return -1;
+    return parseISO(a.releaseDate).getTime() - parseISO(b.releaseDate).getTime();
+  });
+
   return (
     <div className="space-y-6">
       <div>
@@ -49,18 +65,37 @@ export const ReleaseCalendar = ({ items }: ReleaseCalendarProps) => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="p-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        <Card className="p-8 xl:col-span-2">
           <Calendar
             mode="single"
             selected={selectedDate}
             onSelect={setSelectedDate}
-            className={cn("pointer-events-auto")}
+            className={cn("pointer-events-auto w-full [&_.rdp-months]:w-full [&_.rdp-month]:w-full [&_.rdp-table]:w-full [&_td]:p-3 [&_th]:p-3")}
             modifiers={{
               hasRelease: (date) => releaseDates.has(format(date, "yyyy-MM-dd")),
             }}
             modifiersClassNames={{
-              hasRelease: "bg-primary/20 font-bold text-primary hover:bg-primary/30",
+              hasRelease: "relative",
+            }}
+            components={{
+              DayContent: (props) => {
+                const release = getReleaseForDate(props.date);
+                return (
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    <span>{props.date.getDate()}</span>
+                    {release && (
+                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2">
+                        {release.type === "movie" ? (
+                          <Film className="h-3 w-3 text-primary" />
+                        ) : (
+                          <Tv className="h-3 w-3 text-primary" />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              },
             }}
           />
         </Card>
@@ -69,10 +104,10 @@ export const ReleaseCalendar = ({ items }: ReleaseCalendarProps) => {
           <h3 className="text-lg font-semibold mb-4">
             {selectedDate
               ? `Releases on ${format(selectedDate, "MMMM d, yyyy")}`
-              : "Upcoming Releases"}
+              : "All Items"}
           </h3>
 
-          <div className="space-y-4">
+          <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
             {selectedDate && releasesOnDate.length === 0 && (
               <p className="text-muted-foreground text-sm">
                 No releases scheduled for this date
@@ -84,16 +119,17 @@ export const ReleaseCalendar = ({ items }: ReleaseCalendarProps) => {
                 {releasesOnDate.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center gap-4 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
                   >
                     <img
                       src={item.poster}
                       alt={item.title}
-                      className="w-16 h-24 object-cover rounded"
+                      className="w-12 h-18 object-cover rounded"
                     />
-                    <div className="flex-1">
-                      <h4 className="font-semibold">{item.title}</h4>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-semibold text-sm truncate">{item.title}</h4>
                       <Badge variant="secondary" className="mt-1">
+                        {item.type === "movie" ? <Film className="h-3 w-3 mr-1" /> : <Tv className="h-3 w-3 mr-1" />}
                         {item.type === "movie" ? "Movie" : "TV Show"}
                       </Badge>
                     </div>
@@ -102,42 +138,38 @@ export const ReleaseCalendar = ({ items }: ReleaseCalendarProps) => {
               </>
             )}
 
-            {!selectedDate && upcomingReleases.length > 0 && (
-              <div className="space-y-3">
-                <p className="text-sm text-muted-foreground mb-3">
-                  Select a highlighted date to see details
-                </p>
-                {upcomingReleases
-                  .sort((a, b) => a.date.getTime() - b.date.getTime())
-                  .map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex items-center gap-4 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors cursor-pointer"
-                      onClick={() => setSelectedDate(item.date)}
-                    >
-                      <img
-                        src={item.poster}
-                        alt={item.title}
-                        className="w-16 h-24 object-cover rounded"
-                      />
-                      <div className="flex-1">
-                        <h4 className="font-semibold">{item.title}</h4>
-                        <p className="text-sm text-muted-foreground">
-                          {format(item.date, "MMMM d, yyyy")}
+            {!selectedDate && (
+              <>
+                {allItemsSorted.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors cursor-pointer"
+                    onClick={() => item.releaseDate && setSelectedDate(parseISO(item.releaseDate))}
+                  >
+                    <img
+                      src={item.poster}
+                      alt={item.title}
+                      className="w-12 h-18 object-cover rounded"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-semibold text-sm truncate">{item.title}</h4>
+                      {item.releaseDate ? (
+                        <p className="text-xs text-muted-foreground">
+                          {format(parseISO(item.releaseDate), "MMM d, yyyy")}
                         </p>
-                        <Badge variant="secondary" className="mt-1">
-                          {item.type === "movie" ? "Movie" : "TV Show"}
-                        </Badge>
-                      </div>
+                      ) : (
+                        <p className="text-xs text-muted-foreground">
+                          Released {item.year}
+                        </p>
+                      )}
+                      <Badge variant="secondary" className="mt-1">
+                        {item.type === "movie" ? <Film className="h-3 w-3 mr-1" /> : <Tv className="h-3 w-3 mr-1" />}
+                        {item.type === "movie" ? "Movie" : "TV Show"}
+                      </Badge>
                     </div>
-                  ))}
-              </div>
-            )}
-
-            {!selectedDate && upcomingReleases.length === 0 && (
-              <p className="text-muted-foreground text-sm">
-                No upcoming releases in your watchlist
-              </p>
+                  </div>
+                ))}
+              </>
             )}
           </div>
         </Card>
