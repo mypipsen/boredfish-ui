@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { TopNav } from "@/components/TopNav";
-import { MovieCard } from "@/components/MovieCard";
 import { ReleaseCalendar } from "@/components/ReleaseCalendar";
 import { useToast } from "@/hooks/use-toast";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface WatchlistItem {
   id: string;
@@ -90,24 +88,7 @@ const Watchlist = () => {
             Your watchlist is empty
           </div>
         ) : (
-          <Tabs defaultValue="grid" className="w-full">
-            <TabsList className="mb-6">
-              <TabsTrigger value="grid">Grid View</TabsTrigger>
-              <TabsTrigger value="calendar">Calendar</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="grid">
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {items.map((item) => (
-                  <MovieCard key={item.id} movie={item} />
-                ))}
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="calendar">
-              <ReleaseCalendar items={items} />
-            </TabsContent>
-          </Tabs>
+          <ReleaseCalendar items={items} />
         )}
       </main>
     </div>
